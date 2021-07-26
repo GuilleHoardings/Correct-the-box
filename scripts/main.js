@@ -151,6 +151,8 @@ function setSettingsValues() {
 function checkBox() {
 
     var score = getBoxScore();
+    var scoreCorners = "Corner score: " + Math.floor(getBoxScoreCorners()*100);
+
     // Add box to history
     lastCheckBoxes.unshift(cornersDistorted.slice())
     if (lastCheckBoxes.length > lastCheckBoxesMaxLength) lastCheckBoxes.pop()    
@@ -205,7 +207,7 @@ function checkBox() {
         str2 += "Worsened"
     }
 
-    scoreText2.innerHTML = str1 + "<br>" + str2
+    scoreText2.innerHTML = str1 + "<br>" + str2 + "<br>" + scoreCorners
     lastScore = score
 }
 
@@ -229,7 +231,17 @@ function getBoxScore() {
     totalDistance += getDistanceOfPointToLine(cornersDistorted[6], cornersDistorted[7], vanishingPoints[0])
 
     return totalDistance
+}
 
+function getBoxScoreCorners() {
+    var totalDistance = 0
+
+    for (var i = 4; i < 8; i++) {
+        totalDistance += cornersDistorted[i].distance(cornersCorrect[i]);
+        console.log(i, cornersDistorted[i], cornersCorrect[i], cornersDistorted[i].distance(cornersCorrect[i]))
+    }
+
+    return totalDistance
 }
 
 // swap the box to display when "lastCheck" is selected
