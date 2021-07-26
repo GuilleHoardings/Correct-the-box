@@ -18,7 +18,6 @@ canvas.width = document.body.clientWidth;
 canvas.height = document.body.clientHeight; 
 
 
-
 function drawLine(point1, point2, width=1, color="black") {
     ctx.beginPath();
     // initial Y
@@ -93,11 +92,7 @@ function drawABox(cornerArray, cornerRestrictions, drawExtendedLines = false) {
         else if (cornerRestrictions[i] >= 0) color = "#a64200"
         drawPoint(cornerArray[i], color)
     }
-
-
-
 }
-
 
 
 function getMousePos(canvas, event) {
@@ -121,10 +116,3 @@ function getClickedCornerIndex(pointClicked, corners, movementRestrictions) {
     }
     return null
 }
-
-
-
-
-
-
-

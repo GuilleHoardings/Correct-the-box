@@ -1,8 +1,4 @@
-
-
-
-
-document.addEventListener("mousedown", function(event){
+document.addEventListener("mousedown", function (event) {
     mousedown = true
     if (boxToShow != "editable") return
 
@@ -14,7 +10,7 @@ document.addEventListener("mousedown", function(event){
 });
 
 
-document.addEventListener("mousemove", function(event){
+document.addEventListener("mousemove", function (event) {
 
     var mousePos_ = getMousePos(canvas, event)
     var mousePos = new Point(mousePos_.x, mousePos_.y)
@@ -33,12 +29,10 @@ document.addEventListener("mousemove", function(event){
         drawABox(cornersDistorted, cornerMovementRestrictions, showLinesValue)
     }
 
-
 });
 
 
-document.addEventListener("mouseup", function(event){
-
+document.addEventListener("mouseup", function (event) {
     mousedown = false
     selectedCornerIndex = null
 });
@@ -77,8 +71,6 @@ function swapSettingsBoxesButtonValue() {
 }
 
 
-
-
 // Settings
 var VPsMinDistance = 0
 var VPsMaxDistance = 0
@@ -104,10 +96,10 @@ var settingsVPsButton = document.getElementById("settingsVPsButton") // near, fa
 var settingsDistortionButton = document.getElementById("settingsDistortionButton") // small, huge, mixed
 var settingsBoxesButton = document.getElementById("settingsBoxesButton") // small, huge, mixed
 var showEditableBoxButton = document.getElementById("showEditableBoxButton")
-var showSolutionButton = document.getElementById("showSolutionButton") 
-var showInitialBoxButton = document.getElementById("showInitialBoxButton") 
-var showAtLastCheckButton = document.getElementById("showAtLastCheckButton") 
-var checkBoxButton = document.getElementById("checkBoxButton") 
+var showSolutionButton = document.getElementById("showSolutionButton")
+var showInitialBoxButton = document.getElementById("showInitialBoxButton")
+var showAtLastCheckButton = document.getElementById("showAtLastCheckButton")
+var checkBoxButton = document.getElementById("checkBoxButton")
 // score text
 var scoreText = document.getElementById("scoreText")
 var scoreText2 = document.getElementById("scoreText2")
@@ -130,7 +122,7 @@ function setSettingsValues() {
         case "far": VPsMinDistance = 1000; VPsMaxDistance = 6000; break;
         case "mixed": VPsMinDistance = 5; VPsMaxDistance = 1500; break;
     }
-    
+
     switch (settingsDistortionButton.innerHTML) {
         case "small": minDistortion = 0; maxDistortion = 20; break;
         case "medium": minDistortion = 5; maxDistortion = 35; break;
@@ -151,11 +143,11 @@ function setSettingsValues() {
 function checkBox() {
 
     var score = getBoxScore();
-    var scoreCorners = "Corner score: " + Math.floor(getBoxScoreCorners()*100);
+    var scoreCorners = "Corner score: " + Math.floor(getBoxScoreCorners() * 100);
 
     // Add box to history
     lastCheckBoxes.unshift(cornersDistorted.slice())
-    if (lastCheckBoxes.length > lastCheckBoxesMaxLength) lastCheckBoxes.pop()    
+    if (lastCheckBoxes.length > lastCheckBoxesMaxLength) lastCheckBoxes.pop()
     var str1 = ""
     var str2 = "Since last check: "
     // Show the general score
@@ -219,13 +211,13 @@ function getBoxScore() {
 
     totalDistance += getDistanceOfPointToLine(cornersDistorted[1], cornersDistorted[4], vanishingPoints[1])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[2], cornersDistorted[4], vanishingPoints[0])
-    
+
     totalDistance += getDistanceOfPointToLine(cornersDistorted[1], cornersDistorted[5], vanishingPoints[2])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[3], cornersDistorted[5], vanishingPoints[0])
-    
+
     totalDistance += getDistanceOfPointToLine(cornersDistorted[2], cornersDistorted[6], vanishingPoints[2])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[3], cornersDistorted[6], vanishingPoints[1])
-    
+
     totalDistance += getDistanceOfPointToLine(cornersDistorted[4], cornersDistorted[7], vanishingPoints[2])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[5], cornersDistorted[7], vanishingPoints[1])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[6], cornersDistorted[7], vanishingPoints[0])
@@ -245,7 +237,7 @@ function getBoxScoreCorners() {
 }
 
 // swap the box to display when "lastCheck" is selected
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     const key = event.key;
     if ((key == "a" || key == "ArrowLeft") && boxToShow == "lastCheck" && currentLastCheckBox < lastCheckBoxes.length - 1) currentLastCheckBox += 1
     else if ((key == "d" || key == "ArrowRight") && boxToShow == "lastCheck" && currentLastCheckBox > 0) currentLastCheckBox -= 1
@@ -261,9 +253,9 @@ function showLines() {
 function showSolution() {
     boxToShow = "solution"
     showEditableBoxButton.className = "buttonNotSelected"
-    showSolutionButton.className =  "buttonSelected"
-    showInitialBoxButton.className =  "buttonNotSelected" 
-    showAtLastCheckButton.className =  "buttonNotSelected" 
+    showSolutionButton.className = "buttonSelected"
+    showInitialBoxButton.className = "buttonNotSelected"
+    showAtLastCheckButton.className = "buttonNotSelected"
     checkBoxButton.disabled = true
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
@@ -272,9 +264,9 @@ function showSolution() {
 function showEditableBox() {
     boxToShow = "editable"
     showEditableBoxButton.className = "buttonSelected"
-    showSolutionButton.className =  "buttonNotSelected"
-    showInitialBoxButton.className =  "buttonNotSelected" 
-    showAtLastCheckButton.className =  "buttonNotSelected" 
+    showSolutionButton.className = "buttonNotSelected"
+    showInitialBoxButton.className = "buttonNotSelected"
+    showAtLastCheckButton.className = "buttonNotSelected"
     checkBoxButton.disabled = false
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
@@ -284,9 +276,9 @@ function showEditableBox() {
 function showInitialBox() {
     boxToShow = "initial"
     showEditableBoxButton.className = "buttonNotSelected"
-    showSolutionButton.className =  "buttonNotSelected"
-    showInitialBoxButton.className =  "buttonSelected"
-    showAtLastCheckButton.className =  "buttonNotSelected"  
+    showSolutionButton.className = "buttonNotSelected"
+    showInitialBoxButton.className = "buttonSelected"
+    showAtLastCheckButton.className = "buttonNotSelected"
     checkBoxButton.disabled = true
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
@@ -295,9 +287,9 @@ function showInitialBox() {
 function showAtLastCheck() {
     boxToShow = "lastCheck"
     showEditableBoxButton.className = "buttonNotSelected"
-    showSolutionButton.className =  "buttonNotSelected"
-    showInitialBoxButton.className =  "buttonNotSelected"
-    showAtLastCheckButton.className =  "buttonSelected"  
+    showSolutionButton.className = "buttonNotSelected"
+    showInitialBoxButton.className = "buttonNotSelected"
+    showAtLastCheckButton.className = "buttonSelected"
     checkBoxButton.disabled = true
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
@@ -316,8 +308,6 @@ function displayBox() {
     } else {
         drawABox(lastCheckBoxes[currentLastCheckBox], cornerMovementRestrictions, showLinesValue)
     }
-    
-
 }
 
 function newBox() {
@@ -325,8 +315,8 @@ function newBox() {
     checkBoxButton.disabled = true;
     // "canvas" var should be known here
     [cornersCorrect, cornersDistorted, cornerMovementRestrictions, vanishingPoints] = getBoxCorners(
-            new Point(canvas.width/2,canvas.height/2), 
-            minInitialYLength, maxInitialYLength, VPsMinDistance, VPsMaxDistance, minDistortion, maxDistortion)
+        new Point(canvas.width / 2, canvas.height / 2),
+        minInitialYLength, maxInitialYLength, VPsMinDistance, VPsMaxDistance, minDistortion, maxDistortion)
 
     initialScore = getBoxScore()
     initialBox = cornersDistorted.slice()
@@ -345,6 +335,3 @@ function init() {
 }
 
 init()
-
-
-
