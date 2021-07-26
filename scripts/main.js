@@ -101,11 +101,11 @@ var showInitialBoxButton = document.getElementById("showInitialBoxButton")
 var showAtLastCheckButton = document.getElementById("showAtLastCheckButton")
 var checkBoxButton = document.getElementById("checkBoxButton")
 // score text
-var scoreText = document.getElementById("scoreText")
-var scoreText2 = document.getElementById("scoreText2")
+var scoreLinesText = document.getElementById("scoreLinesText")
+var scoreCornersText = document.getElementById("scoreCornersText")
 // variables to generate a text message along with the score
-var initialScore = null
-var lastScore = null
+var initialScoreLines = null
+var lastScoreLines = null
 // whether to show the editable box, the solution or the initial box
 var boxToShow = null // "initial"; "solution"; "editable"; "lastCheck"
 
@@ -142,7 +142,7 @@ function setSettingsValues() {
 // Add the distances of lines to the VPs they should hit together
 function checkBox() {
 
-    var score = getBoxScore();
+    var scoreLines = getBoxScoreLines();
     var scoreCorners = "Corner score: " + Math.floor(getBoxScoreCorners() * 100);
 
     // Add box to history
@@ -151,59 +151,59 @@ function checkBox() {
     var str1 = ""
     var str2 = "Since last check: "
     // Show the general score
-    scoreText.innerHTML = "Off by " + Math.floor(score)
+    scoreLinesText.innerHTML = "Off by " + Math.floor(scoreLines)
     // Get a message along with the score
-    if (score > initialScore && score > 5000) {
+    if (scoreLines > initialScoreLines && scoreLines > 5000) {
         str1 = "That is ... a really big number."
-    } else if (score > initialScore) {
+    } else if (scoreLines > initialScoreLines) {
         str1 = "Worse than at the start."
-    } else if (score == initialScore) {
+    } else if (scoreLines == initialScoreLines) {
         str1 = "Exactly where you started."
-    } else if (score < 0) {
+    } else if (scoreLines < 0) {
         str1 = "You are so good, you destroyed math."
-    } else if (score == 0) {
+    } else if (scoreLines == 0) {
         str1 = "Impossible!"
-    } else if (score <= 10) {
+    } else if (scoreLines <= 10) {
         str1 = "Top 10! (You can stop now)."
-    } else if (score <= 25) {
+    } else if (scoreLines <= 25) {
         str1 = "That is really really good!"
-    } else if (score < 50) {
+    } else if (scoreLines < 50) {
         str1 = "That is really good!"
-    } else if (score < 100) {
+    } else if (scoreLines < 100) {
         str1 = "That is good!"
-    } else if (score < 200) {
+    } else if (scoreLines < 200) {
         str1 = "That is ok!"
-    } else if (score < 400) {
+    } else if (scoreLines < 400) {
         str1 = "Still work to do."
-    } else if (score < 1000) {
+    } else if (scoreLines < 1000) {
         str1 = "You can do better!"
     } else {
         str1 = "Better than before!"
     }
 
-    if (score < lastScore * 0.25) {
+    if (scoreLines < lastScoreLines * 0.25) {
         str2 += "Really really big improvement!"
-    } else if (score < lastScore * 0.5) {
+    } else if (scoreLines < lastScoreLines * 0.5) {
         str2 += "Twice as good!"
-    } else if (score < lastScore * 0.75) {
+    } else if (scoreLines < lastScoreLines * 0.75) {
         str2 += "Big improvement!"
-    } else if (score < lastScore) {
+    } else if (scoreLines < lastScoreLines) {
         str2 += "Improved"
-    } else if (score == lastScore) {
+    } else if (scoreLines == lastScoreLines) {
         str2 += "Exactly the same"
-    } else if (score > lastScore * 4) {
+    } else if (scoreLines > lastScoreLines * 4) {
         str2 += "Seriously worsened"
-    } else if (score > lastScore * 2) {
+    } else if (scoreLines > lastScoreLines * 2) {
         str2 += "Twice as bad"
     } else {
         str2 += "Worsened"
     }
 
-    scoreText2.innerHTML = str1 + "<br>" + str2 + "<br>" + scoreCorners
-    lastScore = score
+    scoreCornersText.innerHTML = str1 + "<br>" + str2 + "<br>" + scoreCorners
+    lastScoreLines = scoreLines
 }
 
-function getBoxScore() {
+function getBoxScoreLines() {
     var totalDistance = 0
     totalDistance += getDistanceOfPointToLine(cornersDistorted[0], cornersDistorted[1], vanishingPoints[0])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[0], cornersDistorted[2], vanishingPoints[1])
@@ -270,7 +270,6 @@ function showEditableBox() {
     checkBoxButton.disabled = false
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
-
 }
 
 function showInitialBox() {
@@ -318,12 +317,12 @@ function newBox() {
         new Point(canvas.width / 2, canvas.height / 2),
         minInitialYLength, maxInitialYLength, VPsMinDistance, VPsMaxDistance, minDistortion, maxDistortion)
 
-    initialScore = getBoxScore()
+    initialScoreLines = getBoxScoreLines()
     initialBox = cornersDistorted.slice()
     lastCheckBoxes = [cornersDistorted.slice()]
     currentLastCheckBox = 0
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
-    lastScore = initialScore
+    lastScoreLines = initialScoreLines
 
     showEditableBox()
 }
