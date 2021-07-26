@@ -5,6 +5,10 @@ document.addEventListener("mousedown", function (event) {
     var mousePos_ = getMousePos(canvas, event)
     var mousePos = new Point(mousePos_.x, mousePos_.y)
     selectedCornerIndex = getClickedCornerIndex(mousePos, cornersDistorted, cornerMovementRestrictions)
+
+    if (selectedCornerIndex != null) {
+        scoreSteps += 1
+    }
 });
 
 
@@ -101,12 +105,14 @@ var checkBoxButton = document.getElementById("checkBoxButton")
 // score text
 var scoreLinesText = document.getElementById("scoreLinesText")
 var scoreCornersText = document.getElementById("scoreCornersText")
+var scoreStepsText = document.getElementById("scoreStepsText")
 
 // variables to generate a text message along with the score
 var initialScoreLines = null
 var initialScoreCorners = null
 var lastScoreLines = null
 var lastScoreCorners = null
+var scoreSteps = null
 
 // whether to show the editable box, the solution or the initial box
 var boxToShow = null // "initial"; "solution"; "editable"; "lastCheck"
@@ -210,6 +216,7 @@ function checkBox() {
    // Show score
    scoreLinesText.innerHTML = "Line score: " + scoreLines + " (" + scoreLinesDiff + ")" + "<br>" + str1 + "<br>" + str2
    scoreCornersText.innerHTML = "Corner score: " + scoreCorners + " (" + scoreCornersDiff + ")"
+   scoreStepsText.innerHTML = "Steps: " + scoreSteps
    lastScoreLines = scoreLines
    lastScoreCorners = scoreCorners
 }
@@ -339,6 +346,8 @@ function newBox() {
 
     scoreLinesText.innerHTML = ""
     scoreCornersText.innerHTML = ""
+    scoreStepsText.innerHTML = ""
+    scoreSteps = 0
 
     showEditableBox()
 }
