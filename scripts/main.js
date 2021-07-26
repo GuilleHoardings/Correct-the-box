@@ -322,6 +322,7 @@ function displayBox() {
 function newBox() {
     showLinesValue = false;
     checkBoxButton.disabled = true;
+
     // "canvas" var should be known here
     [cornersCorrect, cornersDistorted, cornerMovementRestrictions, vanishingPoints] = getBoxCorners(
         new Point(canvas.width / 2, canvas.height / 2),
@@ -335,6 +336,9 @@ function newBox() {
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     lastScoreLines = initialScoreLines
     lastScoreCorners = initialScoreCorners
+
+    scoreLinesText.innerHTML = ""
+    scoreCornersText.innerHTML = ""
 
     showEditableBox()
 }
