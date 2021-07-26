@@ -5,8 +5,6 @@ document.addEventListener("mousedown", function (event) {
     var mousePos_ = getMousePos(canvas, event)
     var mousePos = new Point(mousePos_.x, mousePos_.y)
     selectedCornerIndex = getClickedCornerIndex(mousePos, cornersDistorted, cornerMovementRestrictions)
-
-
 });
 
 
@@ -28,7 +26,6 @@ document.addEventListener("mousemove", function (event) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawABox(cornersDistorted, cornerMovementRestrictions, showLinesValue)
     }
-
 });
 
 
@@ -100,12 +97,17 @@ var showSolutionButton = document.getElementById("showSolutionButton")
 var showInitialBoxButton = document.getElementById("showInitialBoxButton")
 var showAtLastCheckButton = document.getElementById("showAtLastCheckButton")
 var checkBoxButton = document.getElementById("checkBoxButton")
+
 // score text
 var scoreLinesText = document.getElementById("scoreLinesText")
 var scoreCornersText = document.getElementById("scoreCornersText")
+
 // variables to generate a text message along with the score
 var initialScoreLines = null
+var initialScoreCorners = null
 var lastScoreLines = null
+var lastScoreCorners = null
+
 // whether to show the editable box, the solution or the initial box
 var boxToShow = null // "initial"; "solution"; "editable"; "lastCheck"
 
@@ -143,15 +145,17 @@ function setSettingsValues() {
 function checkBox() {
 
     var scoreLines = getBoxScoreLines();
-    var scoreCorners = "Corner score: " + Math.floor(getBoxScoreCorners() * 100);
+    var scoreCorners = getBoxScoreCorners();
 
     // Add box to history
     lastCheckBoxes.unshift(cornersDistorted.slice())
-    if (lastCheckBoxes.length > lastCheckBoxesMaxLength) lastCheckBoxes.pop()
+    if (lastCheckBoxes.length > lastCheckBoxesMaxLength) {
+        lastCheckBoxes.pop()
+    }
+
     var str1 = ""
     var str2 = "Since last check: "
-    // Show the general score
-    scoreLinesText.innerHTML = "Off by " + Math.floor(scoreLines)
+ 
     // Get a message along with the score
     if (scoreLines > initialScoreLines && scoreLines > 5000) {
         str1 = "That is ... a really big number."
@@ -181,6 +185,8 @@ function checkBox() {
         str1 = "Better than before!"
     }
 
+    var scoreLinesDiff = scoreLines - lastScoreLines
+
     if (scoreLines < lastScoreLines * 0.25) {
         str2 += "Really really big improvement!"
     } else if (scoreLines < lastScoreLines * 0.5) {
@@ -199,8 +205,13 @@ function checkBox() {
         str2 += "Worsened"
     }
 
-    scoreCornersText.innerHTML = str1 + "<br>" + str2 + "<br>" + scoreCorners
-    lastScoreLines = scoreLines
+    var scoreCornersDiff = scoreCorners - lastScoreCorners
+
+   // Show score
+   scoreLinesText.innerHTML = "Line score: " + scoreLines + " (" + scoreLinesDiff + ")" + "<br>" + str1 + "<br>" + str2
+   scoreCornersText.innerHTML = "Corner score: " + scoreCorners + " (" + scoreCornersDiff + ")"
+   lastScoreLines = scoreLines
+   lastScoreCorners = scoreCorners
 }
 
 function getBoxScoreLines() {
@@ -222,7 +233,7 @@ function getBoxScoreLines() {
     totalDistance += getDistanceOfPointToLine(cornersDistorted[5], cornersDistorted[7], vanishingPoints[1])
     totalDistance += getDistanceOfPointToLine(cornersDistorted[6], cornersDistorted[7], vanishingPoints[0])
 
-    return totalDistance
+    return Math.floor(totalDistance)
 }
 
 function getBoxScoreCorners() {
@@ -230,10 +241,9 @@ function getBoxScoreCorners() {
 
     for (var i = 4; i < 8; i++) {
         totalDistance += cornersDistorted[i].distance(cornersCorrect[i]);
-        console.log(i, cornersDistorted[i], cornersCorrect[i], cornersDistorted[i].distance(cornersCorrect[i]))
     }
 
-    return totalDistance
+    return Math.floor(totalDistance * 100)
 }
 
 // swap the box to display when "lastCheck" is selected
@@ -318,11 +328,13 @@ function newBox() {
         minInitialYLength, maxInitialYLength, VPsMinDistance, VPsMaxDistance, minDistortion, maxDistortion)
 
     initialScoreLines = getBoxScoreLines()
+    initialScoreCorners = getBoxScoreCorners()
     initialBox = cornersDistorted.slice()
     lastCheckBoxes = [cornersDistorted.slice()]
     currentLastCheckBox = 0
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     lastScoreLines = initialScoreLines
+    lastScoreCorners = initialScoreCorners
 
     showEditableBox()
 }
