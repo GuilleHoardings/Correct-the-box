@@ -255,9 +255,19 @@ function getBoxScoreCorners() {
 
 // swap the box to display when "lastCheck" is selected
 document.addEventListener('keydown', function (event) {
+    if (boxToShow != "lastCheck") {
+        return;
+    }
+
     const key = event.key;
-    if ((key == "a" || key == "ArrowLeft") && boxToShow == "lastCheck" && currentLastCheckBox < lastCheckBoxes.length - 1) currentLastCheckBox += 1
-    else if ((key == "d" || key == "ArrowRight") && boxToShow == "lastCheck" && currentLastCheckBox > 0) currentLastCheckBox -= 1
+    if ((key == "a" || key == "ArrowLeft") &&  currentLastCheckBox < lastCheckBoxes.length - 1) {
+        currentLastCheckBox += 1
+    }
+    
+    if ((key == "d" || key == "ArrowRight") && currentLastCheckBox > 0) {
+        currentLastCheckBox -= 1
+    }
+    
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
 });
