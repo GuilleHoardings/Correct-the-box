@@ -146,6 +146,17 @@ function setSettingsValues() {
     }
 }
 
+// Returns a happy smiley if the difference is negative, a sad one if it is
+// positive and a neutral one if it is equal
+function computeSmiley(errorDiff) {
+    if (errorDiff > 0)
+        return "🥵"
+        
+    if (errorDiff < 0)
+        return "😀"
+
+    return "🧐"
+}
 
 // Add the distances of lines to the VPs they should hit together
 function checkBox() {
@@ -211,11 +222,14 @@ function checkBox() {
         str2 += "Worsened"
     }
 
+    var scoreLinesSmiley = computeSmiley(scoreLinesDiff)
+
     var scoreCornersDiff = scoreCorners - lastScoreCorners
+    var scoreCornersSmiley = computeSmiley(scoreCornersDiff)
 
    // Show score
-   scoreLinesText.innerHTML = "Line error: " + scoreLines + " (" + scoreLinesDiff + ")" + "<br>" + str1 + "<br>" + str2
-   scoreCornersText.innerHTML = "Corner error: " + scoreCorners + " (" + scoreCornersDiff + ")"
+   scoreLinesText.innerHTML = "Line error: " + scoreLines + " (" + scoreLinesDiff + scoreLinesSmiley + ")" + "<br>" + str1 + "<br>" + str2
+   scoreCornersText.innerHTML = "Corner error: " + scoreCorners + " (" + scoreCornersDiff + scoreCornersSmiley + ")"
    scoreStepsText.innerHTML = "Steps: " + scoreSteps
    lastScoreLines = scoreLines
    lastScoreCorners = scoreCorners
@@ -267,7 +281,7 @@ document.addEventListener('keydown', function (event) {
     if ((key == "d" || key == "ArrowRight") && currentLastCheckBox > 0) {
         currentLastCheckBox -= 1
     }
-    
+
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     displayBox()
 });
