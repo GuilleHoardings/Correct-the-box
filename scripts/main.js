@@ -214,8 +214,8 @@ function checkBox() {
     var scoreCornersDiff = scoreCorners - lastScoreCorners
 
    // Show score
-   scoreLinesText.innerHTML = "Line score: " + scoreLines + " (" + scoreLinesDiff + ")" + "<br>" + str1 + "<br>" + str2
-   scoreCornersText.innerHTML = "Corner score: " + scoreCorners + " (" + scoreCornersDiff + ")"
+   scoreLinesText.innerHTML = "Line error: " + scoreLines + " (" + scoreLinesDiff + ")" + "<br>" + str1 + "<br>" + str2
+   scoreCornersText.innerHTML = "Corner error: " + scoreCorners + " (" + scoreCornersDiff + ")"
    scoreStepsText.innerHTML = "Steps: " + scoreSteps
    lastScoreLines = scoreLines
    lastScoreCorners = scoreCorners
@@ -250,7 +250,7 @@ function getBoxScoreCorners() {
         totalDistance += cornersDistorted[i].distance(cornersCorrect[i]);
     }
 
-    return Math.floor(totalDistance * 100)
+    return Math.floor(totalDistance * 10)
 }
 
 // swap the box to display when "lastCheck" is selected
