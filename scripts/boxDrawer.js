@@ -38,10 +38,17 @@ function drawPoint(point1, color) {
     ctx.stroke()
 }
 
-function drawABox(cornerArray, cornerRestrictions, drawExtendedLines = false) {
-    outlinesWidth = 2
-    outlinesColor = "grey"
-    
+function drawABox(cornerArray, cornerRestrictions, drawExtendedLines = false, useThickLines = false) {
+    if (useThickLines) {
+        outlinesWidth = 2
+        outlinesColor = "grey"
+        fixedLinesWitdh = 2
+    } else {
+        outlinesWidth = 1
+        outlinesColor = "black"
+        fixedLinesWitdh = 1
+    }
+
     // lines to outer corners 
     drawLine(cornerArray[1], cornerArray[4], outlinesWidth)
     drawLine(cornerArray[2], cornerArray[4], outlinesWidth)
@@ -64,7 +71,6 @@ function drawABox(cornerArray, cornerRestrictions, drawExtendedLines = false) {
 
     // draw extended lines if requested
     if (drawExtendedLines) {
-        fixedLinesWitdh = 2
         drawLine(cornerArray[0], cornerArray[1].add(cornerArray[1].sub(cornerArray[0]).normalized().mult(2000)), fixedLinesWitdh, "red")
         drawLine(cornerArray[0], cornerArray[2].add(cornerArray[2].sub(cornerArray[0]).normalized().mult(2000)), fixedLinesWitdh, "green")
         drawLine(cornerArray[0], cornerArray[3].add(cornerArray[3].sub(cornerArray[0]).normalized().mult(2000)), fixedLinesWitdh, "blue")

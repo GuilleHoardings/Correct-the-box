@@ -28,7 +28,7 @@ document.addEventListener("mousemove", function (event) {
             cornersDistorted[selectedCornerIndex] = getClosestPointOfLine(cornersDistorted[selectedCornerRestriction], cornersDistorted[selectedCornerIndex], mousePos)
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawABox(cornersDistorted, cornerMovementRestrictions, showLinesValue)
+        drawABox(cornersDistorted, cornerMovementRestrictions, showLinesValue, thickLinesValue)
     }
 });
 
@@ -80,6 +80,7 @@ var maxDistortion = 0
 var minInitialYLength = 0
 var maxInitialYLength = 0
 var showLinesValue = false
+var thickLinesValue = false
 
 
 // Array initialization
@@ -96,6 +97,8 @@ var lastCheckBoxesMaxLength = 50
 var settingsVPsButton = document.getElementById("settingsVPsButton") // near, far, mixed
 var settingsDistortionButton = document.getElementById("settingsDistortionButton") // small, huge, mixed
 var settingsBoxesButton = document.getElementById("settingsBoxesButton") // small, huge, mixed
+var showLinesButton = document.getElementById("showLinesButton")
+var thickLinesButton = document.getElementById("thickLinesButton")
 var showEditableBoxButton = document.getElementById("showEditableBoxButton")
 var showSolutionButton = document.getElementById("showSolutionButton")
 var showInitialBoxButton = document.getElementById("showInitialBoxButton")
@@ -286,8 +289,22 @@ document.addEventListener('keydown', function (event) {
     displayBox()
 });
 
+function updateTextShowLinesButton() {
+    showLinesButton.innerHTML = showLinesValue ? "hide lines" : "show lines";
+}
 function showLines() {
     showLinesValue = !showLinesValue
+    updateTextShowLinesButton();
+    displayBox()
+}
+
+function updateTextThickLines() {
+    thickLinesButton.innerHTML = thickLinesValue ? "thin lines" : "thick lines";
+}
+
+function thickLines() {
+    thickLinesValue = !thickLinesValue
+    updateTextThickLines();
     displayBox()
 }
 
@@ -340,18 +357,19 @@ function showAtLastCheck() {
 function displayBox() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (boxToShow == "editable") {
-        drawABox(cornersDistorted, cornerMovementRestrictions, showLinesValue)
+        drawABox(cornersDistorted, cornerMovementRestrictions, showLinesValue, thickLinesValue)
     } else if (boxToShow == "initial") {
-        drawABox(initialBox, cornerMovementRestrictions, showLinesValue)
+        drawABox(initialBox, cornerMovementRestrictions, showLinesValue, thickLinesValue)
     } else if (boxToShow == "solution") {
-        drawABox(cornersCorrect, cornerMovementRestrictions, showLinesValue)
+        drawABox(cornersCorrect, cornerMovementRestrictions, showLinesValue, thickLinesValue)
     } else {
-        drawABox(lastCheckBoxes[currentLastCheckBox], cornerMovementRestrictions, showLinesValue)
+        drawABox(lastCheckBoxes[currentLastCheckBox], cornerMovementRestrictions, showLinesValue, thickLinesValue)
     }
 }
 
 function newBox() {
     showLinesValue = false;
+    thickLinesValue = false;
     checkBoxButton.disabled = true;
 
     // "canvas" var should be known here
@@ -364,6 +382,8 @@ function newBox() {
     initialBox = cornersDistorted.slice()
     lastCheckBoxes = [cornersDistorted.slice()]
     currentLastCheckBox = 0
+    updateTextShowLinesButton()
+    updateTextThickLines()
     showAtLastCheckButton.innerHTML = "show [" + (currentLastCheckBox + 1) + "] check earlier (use [a] / [d])"
     lastScoreLines = initialScoreLines
     lastScoreCorners = initialScoreCorners
